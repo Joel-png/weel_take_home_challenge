@@ -10,6 +10,7 @@ export class BusinessSignupPage {
         this.registrationPasswordInputField = page.getByTestId('registration-password');
         this.registrationCheckbox = page.getByTestId('registration-terms');
         this.registrationSignupButton = page.getByTestId('email-sign-up');
+        this.registrationPasswordErrorIcon = page.getByTestId('ds-alert-error-icon ds-exclamation-circle-icon');
 
     }
 
@@ -33,6 +34,12 @@ export class BusinessSignupPage {
         return await registrationPasswordInputField.isVisible();
     }
 
+    async isRegistrationPasswordErrorIconVisible() {
+        const registrationPasswordErrorIcon = this.registrationPasswordErrorIcon;
+        const errorCount = await registrationPasswordErrorIcon.count();
+        return errorCount > 0;
+    }
+
     async enterRegistrationEmail(email) {
         const registrationEmailInputField = this.registrationEmailInputField;
         await registrationEmailInputField.fill(email);
@@ -41,6 +48,11 @@ export class BusinessSignupPage {
     async enterPassword(password) {
         const registrationPasswordInputField = this.registrationPasswordInputField;
         await registrationPasswordInputField.fill(password);
+    }
+
+    async blurPassword() {
+        const registrationPasswordInputField = this.registrationPasswordInputField;
+        await registrationPasswordInputField.blur();
     }
 
     async clickRegistrationSubmitButton() {
