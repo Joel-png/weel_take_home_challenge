@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('Test business signup page functionality', () => {
     const existingEmail = "test@example.com";
-    const newEmail = "newaccount@example.com";
+    const newEmail = `testuser+${Date.now()}@example.com`;
     const validPassword = "Test123!";
 
     const personalInfoURL = "https://app-moccona.letsweel.com/app/personal-info";
@@ -43,19 +43,33 @@ test.describe('Test business signup page functionality', () => {
         await businessSignupPage.enterPassword(validPassword);
         await businessSignupPage.checkRegistrationCheckbox();
         await businessSignupPage.clickRegistrationSignupButton();
-        await businessSignupPage.waitForErrorMessage();
+        await businessSignupPage.waitForRegistrationErrorMessage();
         const registrationEmailErrorMessageVisible = await businessSignupPage.isRegistrationEmailErrorMessageVisible();
 
         expect(registrationEmailErrorMessageVisible).toBe(true);
     })
-    
-    /*
-    test('Test signup with valid email and password redirects to correct url', async ({page}) => {
+
+    test('Verify error message shows for email input when signup button pressed with existing work email entered', async ({page}) => {
         const businessSignupPage = new BusinessSignupPage(page);
-        await businessSignupPage.enterRegistrationEmail("Foo");
+        await businessSignupPage.enterRegistrationEmail(existingEmail);
         await businessSignupPage.clickRegistrationSubmitButton();
         await businessSignupPage.enterPassword(validPassword);
+        await businessSignupPage.checkRegistrationCheckbox();
         await businessSignupPage.clickRegistrationSignupButton();
+        await businessSignupPage.waitForExistingEmailErrorMessage();
+        const ExistingEmailErrorMessageVisible = await businessSignupPage.isExistingEmailErrorMessageVisible();
+
+        expect(ExistingEmailErrorMessageVisible).toBe(true);
     })
-    */
+    
+    test('Test signup with valid email and password redirects to correct url', async ({page}) => {
+        const businessSignupPage = new BusinessSignupPage(page);
+        await businessSignupPage.enterRegistrationEmail(newEmail);
+        await businessSignupPage.clickRegistrationSubmitButton();
+        await businessSignupPage.enterPassword(validPassword);
+        await businessSignupPage.checkRegistrationCheckbox();
+        await businessSignupPage.clickRegistrationSignupButton();
+
+        await expect(page).toHaveURL(personalInfoURL);
+    })
 })

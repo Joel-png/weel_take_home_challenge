@@ -5,6 +5,7 @@ export class BusinessSignupPage {
         this.registrationEmailInputField = page.getByTestId('registration-email');
         this.registrationSubmitButton = page.getByTestId('submit-button');
         this.registrationEmailErrorMessage = page.getByTestId('form-input-wrapper-error-text');
+        this.existingEmailErrorMessage = page.getByTestId('registration-email-subtext-container');
 
         this.registrationPasswordInputField = page.getByTestId('registration-password');
         this.registrationCheckbox = page.getByTestId('registration-terms');
@@ -20,6 +21,11 @@ export class BusinessSignupPage {
     async isRegistrationEmailErrorMessageVisible() {
         const registrationEmailErrorMessage = this.registrationEmailErrorMessage;
         return await registrationEmailErrorMessage.isVisible();
+    }
+
+    async isExistingEmailErrorMessageVisible() {
+        const existingEmailErrorMessage = this.existingEmailErrorMessage;
+        return await existingEmailErrorMessage.isVisible();
     }
 
     async isRegistrationPasswordInputFieldVisible() {
@@ -52,8 +58,13 @@ export class BusinessSignupPage {
         await registrationCheckbox.click();
     }
 
-    async waitForErrorMessage() {
+    async waitForRegistrationErrorMessage() {
         const registrationEmailErrorMessage = this.registrationEmailErrorMessage;
         await registrationEmailErrorMessage.waitFor({ state: 'visible' });
+    }
+
+    async waitForExistingEmailErrorMessage() {
+        const existingEmailErrorMessage = this.existingEmailErrorMessage;
+        await existingEmailErrorMessage.waitFor({ state: 'visible' });
     }
 }
