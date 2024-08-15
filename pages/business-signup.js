@@ -3,7 +3,8 @@ export class BusinessSignupPage {
         this.page = page;
   
         this.registrationEmailInputField = page.getByTestId('registration-email');
-        this.registrationSubmitEmailButton = page.getByTestId('submit-button');
+        this.registrationSubmitButton = page.getByTestId('submit-button');
+        this.registrationEmailErrorMessage = page.getByTestId('form-input-wrapper-error-text');
 
         this.registrationPasswordInputField = page.getByTestId('registration-password');
         this.registrationSignupButton = page.getByTestId('email-sign-up');
@@ -12,6 +13,11 @@ export class BusinessSignupPage {
     async isRegistrationEmailInputFieldVisible() {
         const registrationEmailInputField = this.registrationEmailInputField;
         return await registrationEmailInputField.isVisible();
+    }
+
+    async isRegistrationEmailErrorMessageVisible() {
+        const registrationEmailErrorMessage = this.registrationEmailErrorMessage;
+        return await registrationEmailErrorMessage.isVisible();
     }
 
     async isRegistrationPasswordInputFieldVisible() {
@@ -27,5 +33,10 @@ export class BusinessSignupPage {
     async enterPassword(password) {
         const registrationPasswordInputField = this.registrationPasswordInputField;
         await registrationPasswordInputField.fill(password);
+    }
+
+    async clickRegistrationSubmitButton() {
+        const registrationSubmitButton = this.registrationSubmitButton;
+        await registrationSubmitButton.click();
     }
 }
